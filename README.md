@@ -5,10 +5,17 @@
 ## A. geniuscorp-api (Laravel 13)
 
 ```bash
-laravel new geniuscorp-api          # Starter kit: None
-cd geniuscorp-api
+composer create-project laravel/laravel:^13.0 api
+cd api
 php artisan install:api             # ติดตั้ง Sanctum + routes/api.php
 ```
+
+รันโปรเจกต์ Laravel ด้วยคำสั่ง:
+```bash
+php artisan serve
+```
+
+เข้าชมโปรเจกต์ที่รันอยู่ได้ที่: http://127.0.0.1:8000
 
 จากนั้น **คัดลอกโฟลเดอร์/ไฟล์ในชุดนี้วางทับ** โปรเจกต์ที่สร้าง:
 
