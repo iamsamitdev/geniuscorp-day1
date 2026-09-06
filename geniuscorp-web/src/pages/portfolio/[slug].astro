@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { getPortfolios } from '../../lib/api'
+import type { Portfolio } from '../../lib/types'
+
+export async function getStaticPaths() {
+  const portfolios = await getPortfolios()
+  return portfolios.map((item) => ({
+    params: { slug: item.slug },
+    props: { item },
+  }))
+}
+
+interface Props {
+  item: Portfolio
+}
+
+const { item } = Astro.props
+---
+
+<BaseLayout title={item.title} description={item.summary}>
+  <article class="container prose">
+    <nav aria-label="breadcrumb" class="breadcrumb">
+      <ol>
+        <li><a href="/">หน้าแรก</a></li>
+        <li><a href="/portfolio/">ผลงาน</a></li>
+        <li><span aria-current="page">{item.title}</span></li>
+      </ol>
+    </nav>
+    <h1>{item.title}</h1>
+    {item.client_name && <p class="meta">ลูกค้า: {item.client_name}</p>}
+    {item.completed_at && (
+      <p class="meta">ส่งมอบเมื่อ <time datetime={item.completed_at}>{item.completed_at}</time></p>
+    )}
+    <p class="lead">{item.summary}</p>
+    {item.description && <div set:html={item.description} />}
+  </article>
+</BaseLayout>

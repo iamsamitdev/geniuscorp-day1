@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { getTeam } from '../lib/api'
+
+const team = await getTeam()
+---
+
+<BaseLayout
+  title="ทีมงานของเรา"
+  description="ทำความรู้จักทีมผู้บริหารและนักพัฒนาของ GeniusCorp ประสบการณ์รวมกว่า 40 ปีในการพัฒนาซอฟต์แวร์องค์กร"
+>
+  <section class="container">
+    <h1>ทีมงานของเรา</h1>
+    <div class="grid">
+      {team.map((member) => (
+        <article class="card" id={member.slug}>
+          {member.photo && (
+            <img src={member.photo} alt={member.name} loading="lazy" width="320" height="320" />
+          )}
+          <h3>{member.name}</h3>
+          <p class="meta">{member.job_title}</p>
+          {member.bio && <p>{member.bio}</p>}
+          {member.social_links.length > 0 && (
+            <ul class="social">
+              {member.social_links.map((link) => (
+                <li><a href={link} rel="me noopener" target="_blank">{new URL(link).hostname}</a></li>
+              ))}
+            </ul>
+          )}
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import PortfolioCard from '../../components/PortfolioCard.astro'
+import { getPortfolios } from '../../lib/api'
+
+const portfolios = await getPortfolios()
+---
+
+<BaseLayout
+  title="ผลงานและลูกค้าของเรา"
+  description="ตัวอย่างโปรเจกต์ที่ GeniusCorp ส่งมอบให้ลูกค้าองค์กร พร้อมผลลัพธ์ที่วัดได้จริง"
+>
+  <section class="container">
+    <h1>ผลงานและลูกค้าของเรา</h1>
+    <div class="grid">
+      {portfolios.map((item) => <PortfolioCard item={item} />)}
+    </div>
+  </section>
+</BaseLayout>

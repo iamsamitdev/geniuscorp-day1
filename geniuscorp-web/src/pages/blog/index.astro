@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import ArticleCard from '../../components/ArticleCard.astro'
+import { getArticles } from '../../lib/api'
+
+const articles = await getArticles()
+---
+
+<BaseLayout
+  title="บทความและข่าวสาร"
+  description="บทความเทคนิคด้านการพัฒนาเว็บ โมบายแอป และ GEO/AEO จากทีม GeniusCorp อัปเดตทุกสัปดาห์"
+>
+  <section class="container">
+    <h1>บทความและข่าวสาร</h1>
+    <div class="grid">
+      {articles.map((article) => <ArticleCard article={article} />)}
+    </div>
+  </section>
+</BaseLayout>

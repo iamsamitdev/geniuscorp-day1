@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { getArticles, getArticle } from '../../lib/api'
+import { formatDate } from '../../lib/format'
+import type { Article } from '../../lib/types'
+
+export async function getStaticPaths() {
+  const list = await getArticles()
+
+  // list endpoint ไม่ส่ง body → ดึงฉบับเต็มรายตัวพร้อมกัน
+  const articles = await Promise.all(list.map((a) => getArticle(a.slug)))
+
+  return articles.map((article) => ({
+    params: { slug: article.slug },
+    props: { article },
+  }))
+}
+
+interface Props {
+  article: Article
+}
+
+const { article } = Astro.props
+const isUpdated =
+  article.updated_at && article.published_at && new Date(article.updated_at) > new Date(article.published_at)
+---
+
+<BaseLayout title={article.title} description={article.excerpt}>
+  <article class="container prose">
+    <nav aria-label="breadcrumb" class="breadcrumb">
+      <ol>
+        <li><a href="/">หน้าแรก</a></li>
+        <li><a href="/blog/">บทความ</a></li>
+        <li><span aria-current="page">{article.title}</span></li>
+      </ol>
+    </nav>
+
+    <h1>{article.title}</h1>
+
+    <p class="meta">
+      โดย <a href={article.author.url}>{article.author.name}</a>, {article.author.job_title}
+      {article.published_at && (
+        <> · เผยแพร่ <time datetime={article.published_at}>{formatDate(article.published_at)}</time></>
+      )}
+      {isUpdated && article.updated_at && (
+        <> · แก้ไขล่าสุด <time datetime={article.updated_at}>{formatDate(article.updated_at)}</time></>
+      )}
+    </p>
+
+    {article.cover_image && (
+      <img src={article.cover_image} alt={article.title} loading="lazy" width="1200" height="630" />
+    )}
+
+    {/* ย่อหน้าแรกคือ excerpt: ตอบคำถามหลักก่อน (Inverted Pyramid) */}
+    <p class="lead">{article.excerpt}</p>
+
+    <div set:html={article.body} />
+  </article>
+</BaseLayout>

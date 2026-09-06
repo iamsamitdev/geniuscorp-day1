@@ -1,0 +1,21 @@
+---
+import type { Portfolio } from '../lib/types'
+
+interface Props {
+  item: Portfolio
+}
+
+const { item } = Astro.props
+---
+
+<article class="card">
+  {item.cover_image && (
+    <img src={item.cover_image} alt={item.title} loading="lazy" width="800" height="450" />
+  )}
+  <h3><a href={item.url}>{item.title}</a></h3>
+  {item.client_name && <p class="meta">ลูกค้า: {item.client_name}</p>}
+  <p>{item.summary}</p>
+  {item.service && (
+    <p class="meta">บริการ: <a href={item.service.url}>{item.service.name}</a></p>
+  )}
+</article>

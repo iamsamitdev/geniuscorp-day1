@@ -1,0 +1,29 @@
+---
+const nav = [
+  { href: '/', label: 'หน้าแรก' },
+  { href: '/about/', label: 'เกี่ยวกับเรา' },
+  { href: '/services/', label: 'บริการ' },
+  { href: '/portfolio/', label: 'ผลงาน' },
+  { href: '/blog/', label: 'บทความ' },
+  { href: '/team/', label: 'ทีมงาน' },
+  { href: '/contact/', label: 'ติดต่อเรา' },
+]
+
+// ไฮไลต์เมนูปัจจุบันตอน build (ไม่ต้องใช้ JS ฝั่ง client)
+const currentPath = Astro.url.pathname
+---
+
+<header class="site-header">
+  <a href="/" class="brand" aria-label="GeniusCorp หน้าแรก">GeniusCorp</a>
+  <nav aria-label="เมนูหลัก">
+    <ul>
+      {nav.map((item) => (
+        <li>
+          <a href={item.href} aria-current={currentPath === item.href ? 'page' : undefined}>
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</header>

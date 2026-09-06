@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import ServiceCard from '../../components/ServiceCard.astro'
+import { getServices } from '../../lib/api'
+
+const services = await getServices()
+---
+
+<BaseLayout
+  title="บริการของเรา"
+  description="บริการพัฒนาเว็บไซต์องค์กร โมบายแอป และที่ปรึกษา GEO/AEO จาก GeniusCorp พร้อมราคาเริ่มต้นและระยะเวลาดำเนินการ"
+>
+  <section class="container">
+    <h1>บริการของเรา</h1>
+    <p class="lead">
+      เราให้บริการ {services.length} ด้านหลัก ครอบคลุมตั้งแต่การพัฒนาเว็บไซต์องค์กร
+      โมบายแอปพลิเคชัน จนถึงการทำให้เว็บถูกอ้างอิงโดย AI Search
+    </p>
+
+    <div class="grid">
+      {services.map((service) => <ServiceCard service={service} />)}
+    </div>
+  </section>
+</BaseLayout>

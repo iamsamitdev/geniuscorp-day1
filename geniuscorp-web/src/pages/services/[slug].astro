@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { getServices } from '../../lib/api'
+import { formatPrice } from '../../lib/format'
+import type { Service } from '../../lib/types'
+
+export async function getStaticPaths() {
+  const services = await getServices()
+
+  return services.map((service) => ({
+    params: { slug: service.slug },
+    props: { service },
+  }))
+}
+
+interface Props {
+  service: Service
+}
+
+const { service } = Astro.props
+---
+
+<BaseLayout title={service.name} description={service.short_description}>
+  <article class="container">
+    <nav aria-label="breadcrumb" class="breadcrumb">
+      <ol>
+        <li><a href="/">หน้าแรก</a></li>
+        <li><a href="/services/">บริการ</a></li>
+        <li><span aria-current="page">{service.name}</span></li>
+      </ol>
+    </nav>
+
+    <h1>{service.name}</h1>
+    <p class="lead">{service.short_description}</p>
+
+    <dl class="facts">
+      {service.price_from && (
+        <>
+          <dt>ราคาเริ่มต้น</dt>
+          <dd>{formatPrice(service.price_from)} {service.price_currency}</dd>
+        </>
+      )}
+      {service.duration_days && (
+        <>
+          <dt>ระยะเวลาดำเนินการ</dt>
+          <dd>{service.duration_days} วัน</dd>
+        </>
+      )}
+    </dl>
+
+    {/* description เป็น HTML จากฐานข้อมูลของเราเอง */}
+    <div class="prose" set:html={service.description} />
+  </article>
+</BaseLayout>

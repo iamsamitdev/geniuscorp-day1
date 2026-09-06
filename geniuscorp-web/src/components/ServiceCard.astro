@@ -1,0 +1,31 @@
+---
+import type { Service } from '../lib/types'
+import { formatPrice } from '../lib/format'
+
+interface Props {
+  service: Service
+}
+
+const { service } = Astro.props
+---
+
+<article class="card">
+  {/* การ์ดใช้ h3 (ไม่ใช่ h2) เพราะ h2 สงวนไว้ให้หัวข้อหลักของหน้า */}
+  <h3><a href={service.url}>{service.name}</a></h3>
+  <p>{service.short_description}</p>
+  <dl class="meta">
+    {service.price_from && (
+      <>
+        <dt>เริ่มต้น</dt>
+        <dd>{formatPrice(service.price_from)} บาท</dd>
+      </>
+    )}
+    {service.duration_days && (
+      <>
+        <dt>ระยะเวลา</dt>
+        <dd>{service.duration_days} วัน</dd>
+      </>
+    )}
+  </dl>
+  <a href={service.url} class="btn">ดูรายละเอียด</a>
+</article>

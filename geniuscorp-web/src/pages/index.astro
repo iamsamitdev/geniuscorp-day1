@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import ServiceCard from '../components/ServiceCard.astro'
+import ArticleCard from '../components/ArticleCard.astro'
+import { getServices, getArticles, getPortfolios } from '../lib/api'
+
+// ดึงพร้อมกันเพื่อให้ build เร็ว
+const [services, articles, portfolios] = await Promise.all([
+  getServices(),
+  getArticles(),
+  getPortfolios(),
+])
+
+const latestArticles = articles.slice(0, 3)
+---
+
+<BaseLayout
+  title="บริษัทพัฒนาซอฟต์แวร์และเว็บไซต์องค์กรที่ AI ค้นเจอ"
+  description="GeniusCorp รับพัฒนาเว็บไซต์องค์กร โมบายแอป และให้คำปรึกษา GEO/AEO ส่งมอบแล้วมากกว่า 40 โปรเจกต์ ทีมประสบการณ์ 15 ปี"
+>
+  <section class="hero container">
+    {/* หน้าแรกต้องมี H1 เดียว */}
+    <h1>พัฒนาเว็บไซต์และซอฟต์แวร์องค์กรที่ทั้งคนและ AI ค้นเจอ</h1>
+    <p class="lead">
+      ส่งมอบแล้วมากกว่า 40 โปรเจกต์ ด้วยสถาปัตยกรรมสมัยใหม่ที่โหลดเร็วกว่า 0.8 วินาที
+      และพร้อมสำหรับ AI Search ตั้งแต่วันแรก
+    </p>
+    <a href="/contact/" class="btn btn-primary">ปรึกษาฟรี</a>
+  </section>
+
+  <section class="container">
+    <h2>บริการของเรา</h2>
+    <div class="grid">
+      {services.map((service) => <ServiceCard service={service} />)}
+    </div>
+  </section>
+
+  <section class="container">
+    <h2>ผลงานล่าสุด</h2>
+    <ul class="list">
+      {portfolios.map((item) => (
+        <li>
+          <a href={item.url}>{item.title}</a>
+          {item.client_name && <span> · {item.client_name}</span>}
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="container">
+    <h2>บทความล่าสุด</h2>
+    <div class="grid">
+      {latestArticles.map((article) => <ArticleCard article={article} />)}
+    </div>
+  </section>
+</BaseLayout>
