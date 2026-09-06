@@ -1,4 +1,4 @@
-# Day 1 - GEO/AEO Mindset & Full Stack Foundation (โค้ดเฉลย)
+# Day 1 - GEO/AEO Full Stack Foundation (โค้ดเฉลย)
 
 ผลลัพธ์ของวันนี้: Laravel API (Sanctum) + MySQL พร้อมข้อมูลจำลอง และเว็บ Astro SSG 7 เมนูดึงข้อมูลจริงตอน build
 
